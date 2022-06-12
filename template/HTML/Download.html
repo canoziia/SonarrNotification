@@ -1,0 +1,5 @@
+<b>剧集{{download_type}}: <a href="{{series_image}}">{{$sonarr_series_title$}}</a></b>
+第{{$sonarr_episodefile_seasonnumber$}}季 第{{$sonarr_episodefile_episodenumbers$}}集 {{$sonarr_episodefile_quality$}}
+发布: {{$sonarr_episodefile_releasegroup$}}
+文件名: {{$sonarr_episodefile_scenename$}}
+{{"旧文件已被删除" if $sonarr_deletedrelativepaths$!="" else ""}}

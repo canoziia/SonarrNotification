@@ -1,0 +1,51 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: AutoRelease
+
+on:
+    push:
+        tags:
+            - v*
+
+permissions: write-all
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+            - name: Get tag name
+              id: tag
+              run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+            - name: Set up Python 3.10
+              uses: actions/setup-python@v3
+              with:
+                  python-version: "3.10"
+            - name: Install dependencies and build
+              run: |
+                  python -m pip install --upgrade pip
+                  sudo apt update
+                  sudo apt install virtualenv -y
+                  virtualenv ~/env
+                  source ~/env/bin/activate
+                  python setup.py install
+                  pip install pyinstaller
+                  pyinstaller snotif.spec
+            - name: Automatic Releases
+              uses: marvinpinto/action-automatic-releases@latest
+              with:
+                  # GitHub secret token
+                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  # Git tag (for automatic releases)
+                  # automatic_release_tag: # optional
+                  # Should this release be marked as a draft?
+                  draft: false # optional
+                  # Should this release be marked as a pre-release?
+                  prerelease: false # optional, default is true
+                  # Release title (for automatic releases)
+                  title: "${{ steps.tag.outputs.VERSION }}" # optional
+                  # Assets to upload to the release
+                  files: |
+                      dist/snotif
