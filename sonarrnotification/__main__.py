@@ -4,7 +4,7 @@ import click
 import sonarrnotification.env as env
 import sonarrnotification.commands as commands
 
-__version__ = "0.0.1"
+__version__ = "1.0.1"
 __description__ = "Sonarr custom notification scripts"
 
 

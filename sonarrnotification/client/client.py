@@ -24,6 +24,7 @@ def parseSender(config):
 
 class telegram:
     def __init__(self, config):
+        self.type = "telegram"  # self.type = config["type"]
         self.token = str(config["token"])
         self.chat_id = config["chat_id"]
         self.parse_mode = str(config["parse_mode"])
@@ -33,7 +34,7 @@ class telegram:
         if (not "template" in config) or config["template"] == None:
             # use build-in template
             self.template = os.path.join(
-                mainexec_dir(), f"template/{self.parse_mode}")
+                mainexec_dir(), "template", self.type, self.parse_mode)
         else:
             # use external template
             self.template = str(config["template"]) if os.path.isabs(
