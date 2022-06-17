@@ -8,17 +8,17 @@ from sonarrnotification.custom import *
 def get(content: str) -> str:
     # str, code, func, func()
     c = re.sub(r"\$(?P<env>\w*?)\$",
-               lambda matched: str(env.get(matched.group("env"))), content)
+               lambda matched: "\""+str(env.get(matched.group("env")))+"\"", content)
     try:
-        # code, func, func()
+        # str, code, func, func()
         t = eval(c)
         if callable(t):
             # func
             res = t()
         else:
-            # code, func()
+            # str, code after execution, func()
             res = t
     except:
-        # str
+        # code, func, func() with error
         res = c
     return str(res)
